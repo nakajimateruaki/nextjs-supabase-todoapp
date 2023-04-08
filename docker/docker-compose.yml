@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  apache:
+    image: php:7.4-apache
+    hostname: php-local
+    container_name: nextjs-todoapp
+    build: ./php-apache
+    ports:
+      - "80:80"
+    volumes:
+      - ../out/:/var/www/html/
+      # Apache2 Logs
+      - ./php-apache/data/log:/host/log

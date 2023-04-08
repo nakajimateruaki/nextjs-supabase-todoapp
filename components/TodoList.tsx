@@ -13,9 +13,9 @@ export const TodoList = (props: Props) => {
 
   const handleDelete = async (id: number) => {
     await deleteTodo(id);
-    const newTodos = await getAllTodos();
-    console.log(newTodos);
-    setTodos(newTodos);
+    const allTodos = await getAllTodos();
+    console.log(allTodos);
+    setTodos(allTodos ? (allTodos as Todo[]) : []);
   };
   return (
     <div>

@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import TodoList from "@/components/TodoList";
 import { getAllTodos } from "@/utils/supabaseFunctions";
 import { addTodo } from "@/utils/supabaseFunctions";
+import { Todo } from "@/utils/interface";
 
-export const TodoApp = () => {
-  const [todos, setTodos] = useState([]);
+const TodoApp: React.FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]); // Todo型を使用する
   const [title, setTitle] = useState("");
 
   useEffect(() => {
     const getTodos = async () => {
       const allTodos = await getAllTodos();
-      setTodos(allTodos);
+      setTodos(allTodos ? (allTodos as Todo[]) : []);
     };
     getTodos();
   }, []);
@@ -21,8 +22,8 @@ export const TodoApp = () => {
     if (title === "") return;
 
     await addTodo(title);
-    let todos = await getAllTodos(); //即時反映するために①
-    setTodos(todos); //即時反映③
+    let allTodos = await getAllTodos(); //即時反映するために①
+    setTodos(allTodos ? (allTodos as Todo[]) : []);
     setTitle(""); //submit後にinputの内容を空にする対応
   };
 
@@ -42,7 +43,7 @@ export const TodoApp = () => {
         </button>
       </form>
 
-      <TodoList todos={todos} setTodos={todos} />
+      <TodoList todos={todos} setTodos={setTodos} />
     </section>
   );
 };
